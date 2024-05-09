@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from tqdm import tqdm
 from retry import retry
 
+
 class EarningData:
 
     def __init__(self):
@@ -56,7 +57,7 @@ class EarningData:
         return self.gc.open_by_url(gs_name)
 
     @retry(tries=3)
-    def get_earnings_date_alternative(self,stock):
+    def get_earnings_date_alternative(self, stock):
         try:
             tick = yf.Ticker(stock)
             table = tick.get_earnings_dates()
@@ -71,17 +72,15 @@ class EarningData:
                 raise ValueError('No tables found')
         except Exception as e:
             logging.info(f'Error in {stock}: {str(e)}')
-            #if str(e) == 'Earnings Date':
+            # if str(e) == 'Earnings Date':
             url = self.config['url'].replace('$date', self.today_date).replace('$stock', stock)
             earning_date = self.get_earnings_data(url)
             return earning_date
 
-
-
     def get_stocks(self):
         global_index = self.connect_to_gs(self.config['global_index'])
         worksheet = global_index.worksheet('Supporting Data')
-        stock_list = worksheet.get('C355:C5000')
+        stock_list = worksheet.get('C4:C5000')
         stock_list = [s[0] for s in stock_list]
         return stock_list
 
@@ -90,13 +89,13 @@ class EarningData:
         global_index = self.connect_to_gs(self.config['global_index'])
         global_worksheet = global_index.worksheet('Supporting Data')
         for stock in tqdm(stocks, desc='Collecting Dates'):
-            row = stocks.index(stock) + 355
-            #url = self.config['url'].replace('$date', self.today_date).replace('$stock', stock)
+            row = stocks.index(stock) + 4
+            # url = self.config['url'].replace('$date', self.today_date).replace('$stock', stock)
             earning_date = self.get_earnings_date_alternative(stock)
             if earning_date:
-                self.final_data.append({'range': f'AB{row}', 'values': [[earning_date.replace("'",'')]]})
+                self.final_data.append({'range': f'AB{row}', 'values': [[earning_date.replace("'", '')]]})
                 logging.info(f'{earning_date} for {stock} found')
-                #print(f'{stock} : found')
+                # print(f'{stock} : found')
 
             if len(self.final_data) == 10:
                 global_worksheet.batch_update(self.final_data)
@@ -108,4 +107,4 @@ class EarningData:
 if __name__ == "__main__":
     e = EarningData()
     e.main()
-    #print(e.get_earnings_date_alternative('DELL'))
+    #print(e.get_earnings_date_alternative('ATI'))
