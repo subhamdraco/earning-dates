@@ -6,9 +6,7 @@ import gspread
 import json
 import logging
 import yfinance as yf
-from selenium.webdriver.common.by import By
 from tqdm import tqdm
-from retry import retry
 
 
 class EarningData:
@@ -56,7 +54,6 @@ class EarningData:
     def connect_to_gs(self, gs_name):
         return self.gc.open_by_url(gs_name)
 
-    @retry(tries=3)
     def get_earnings_date_alternative(self, stock):
         try:
             tick = yf.Ticker(stock)
@@ -73,9 +70,9 @@ class EarningData:
         except Exception as e:
             logging.info(f'Error in {stock}: {str(e)}')
             # if str(e) == 'Earnings Date':
-            url = self.config['url'].replace('$date', self.today_date).replace('$stock', stock)
-            earning_date = self.get_earnings_data(url)
-            return earning_date
+            # url = self.config['url'].replace('$date', self.today_date).replace('$stock', stock)
+            # earning_date = self.get_earnings_data(url)
+            # return earning_date
 
     def get_stocks(self):
         global_index = self.connect_to_gs(self.config['global_index'])
@@ -107,4 +104,9 @@ class EarningData:
 if __name__ == "__main__":
     e = EarningData()
     e.main()
-    #print(e.get_earnings_date_alternative('ATI'))
+    # tick = yf.Ticker('NYXH.BR')
+    # table = tick.get_earnings_dates()
+    # print(table.columns.to_list())
+    # print(type(table.columns))
+    # print(table)
+    # print(e.get_earnings_data('USFD'))
