@@ -16,7 +16,7 @@ class DateScrape(scrapy.Spider):
     custom_settings = {
         'FEED_FORMAT': 'json',
         'FEED_URI': 'data.json',
-        'DOWNLOAD_DELAY': 5
+        'DOWNLOAD_DELAY': 2
     }
 
     def __init__(self, **kwargs):

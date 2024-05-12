@@ -20,9 +20,9 @@ class InvestScrape(scrapy.Spider):
     custom_settings = {
         'FEED_FORMAT': 'json',
         'FEED_URI': 'urls.json',
-        'DOWNLOAD_DELAY' : 5
+        'DOWNLOAD_DELAY': 2
     }
-
+#
     def __init__(self, **kwargs):
         # Path to your JSON file
         file_path = "urls.json"

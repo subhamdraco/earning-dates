@@ -18,7 +18,8 @@ for stock_data in files:
     except:
         continue
     final_data_future.append({'range': f'AB{row}', 'values': [[stock_data['future_date']]]})
-    final_data_recent.append({'range': f'AH{row}', 'values': [[stock_data['recent_date']]]})
+    final_data_recent.append({'range': f'AC{row}', 'values': [[stock_data['recent_date']]]})
 
+worksheet.batch_clear(['AB4:AB6000', 'AC4:AC6000'])
 worksheet.batch_update(final_data_future)
 worksheet.batch_update(final_data_recent)
