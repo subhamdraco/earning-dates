@@ -22,3 +22,4 @@ process.crawl(InvestScrape)
 
 # Start the process
 process.start()
+
