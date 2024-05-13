@@ -12,7 +12,7 @@ class DateScrape(scrapy.Spider):
     for entry in files:
         if entry['url']:
             start_urls.append('https://www.investing.com' + entry['url'] + '-earnings')
-    # start_urls = ['https://www.investing.com/equities/actuant-corp-earnings']
+    # start_urls = ['https://www.investing.com/equities/williams-sonoma-inc-earnings']
     custom_settings = {
         'FEED_FORMAT': 'json',
         'FEED_URI': 'data.json',
@@ -43,7 +43,7 @@ class DateScrape(scrapy.Spider):
             future_dates = dates_[dates_['dates'] > today_date]
             recent_dates = dates_[dates_['dates'] < today_date]
             if not future_dates.empty and not recent_dates.empty:
-                future_date = future_dates.tail(1)['dates'].iloc[0].strftime('%d/%m/%Y')
+                future_date = future_dates.head(1)['dates'].iloc[0].strftime('%d/%m/%Y')
                 recent_date = recent_dates.tail(1)['dates'].iloc[0].strftime('%d/%m/%Y')
             else:
                 future_date = '-'
