@@ -11,7 +11,12 @@ class DateScrape(scrapy.Spider):
     files = json.load(f)
     for entry in files:
         if entry['url']:
-            start_urls.append('https://www.investing.com' + entry['url'] + '-earnings')
+            if "?" in entry['url']:
+                url = entry['url'].split("?")
+                url = 'https://www.investing.com'+url[0]+'-earnings?'+url[1]
+                start_urls.append(url)
+            else:
+                start_urls.append('https://www.investing.com' + entry['url'] + '-earnings')
     # start_urls = ['https://www.investing.com/equities/williams-sonoma-inc-earnings']
     custom_settings = {
         'FEED_FORMAT': 'json',
