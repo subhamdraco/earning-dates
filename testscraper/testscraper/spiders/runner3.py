@@ -11,7 +11,7 @@ global_index = gc.open_by_url(config['global_index'])
 worksheet = global_index.worksheet('Supporting Data')
 stock_list = worksheet.get('C4:C6000')
 stock_list = [s[0].replace('.SZ', '').replace('.SS', '').replace('.SI', '').replace('.T', '').replace('.PA', '').replace(
-            '.BR', '').replace('.JK', '') for s in stock_list]
+            '.BR', '').replace('.JK', '').replace('.F','') for s in stock_list]
 for stock_data in files:
     try:
         row = stock_list.index(stock_data['stock']) + 4

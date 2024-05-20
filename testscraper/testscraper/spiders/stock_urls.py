@@ -14,15 +14,16 @@ class InvestScrape(scrapy.Spider):
     stock_list = worksheet.get('C4:C6000')
     stock_list = [
         s[0].replace('.SZ', '').replace('.SS', '').replace('.SI', '').replace('.T', '').replace('.PA', '').replace(
-            '.BR', '').replace('.JK', '') for s in stock_list]
+            '.BR', '').replace('.JK', '').replace('.F', '') for s in stock_list]
     start_urls = ['https://www.investing.com/search/?q=' + stock for stock in stock_list]
 
     custom_settings = {
         'FEED_FORMAT': 'json',
         'FEED_URI': 'urls.json',
-        'DOWNLOAD_DELAY': 2
+        # 'DOWNLOAD_DELAY': 2
     }
-#
+
+    #
     def __init__(self, **kwargs):
         # Path to your JSON file
         file_path = "urls.json"
